@@ -275,7 +275,7 @@ public class ClassGridTarea1BFS
 
     public List<NodeTarea1BFS> BreadthFirstSearch(int in_startX, int in_startY, int in_endX, int in_endY)
     {
-
+        //creamos los nodos de inicio y de final con sus respectivos nodos en "Y" y en "X"
         NodeTarea1BFS StartNode = GetNode(in_startY, in_startX);
         NodeTarea1BFS EndNode = GetNode(in_endY, in_endX);
 
@@ -285,9 +285,11 @@ public class ClassGridTarea1BFS
             return null;
         }
 
+        //utilizamos el Queue en lugar del stack para la lista abierta
         Queue<NodeTarea1BFS> OpenList = new Queue<NodeTarea1BFS>();
         List<NodeTarea1BFS> ClosedList = new List<NodeTarea1BFS>();
 
+        //agregamos el startNode a la Queue
         OpenList.Enqueue(StartNode);
 
         //Prioridad
@@ -296,7 +298,7 @@ public class ClassGridTarea1BFS
         while (OpenList.Count > 0)
         {
             //Mientras haya nodos en la lista abierta, vamos a buscar un camino
-            //Obtenemos el primer nodo de la lista abierta
+            //Obtenemos el primer nodo de la lista abierta que esta en la queue
             NodeTarea1BFS currentNode = OpenList.Dequeue();
             Debug.Log("Current Node is: " + currentNode.x + ", " + currentNode.y);
 
