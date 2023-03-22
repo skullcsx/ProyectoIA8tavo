@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PriorityQueue
 {
-    List<Node> nodes = new List<Node>();
+    public List<Node> nodes = new List<Node>();
 
     public int Count
     {
@@ -45,10 +45,10 @@ public class PriorityQueue
         return nodes[i];
     }
 
-    // void RemoveAt(int in_index)
-    //
-    //nodes.RemoveAt(in_index)
-    //}
+    public void Remove(Node in_node)
+    {
+        nodes.Remove(in_node);
+    }
 
     public bool Contains(Node in_node)
     {
