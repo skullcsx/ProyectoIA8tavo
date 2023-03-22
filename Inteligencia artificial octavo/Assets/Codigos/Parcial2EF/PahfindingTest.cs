@@ -27,7 +27,7 @@ public class PahfindingTest : MonoBehaviour
         Camera.main.transform.position = new Vector3(iWidth * 0.5f * fTileSize,
                                                     iHeight * 0.5f * fTileSize,
                                                     Camera.main.transform.position.z);
-
+        
     }
 
     // Start is called before the first frame update
@@ -38,7 +38,7 @@ public class PahfindingTest : MonoBehaviour
 
 
 
-        // myTest.DepthFirstSearch(0, 0, 4, 4);
+        //myTest.DepthFirstSearch(0, 0, 4, 4);
         // myTest.BreadthFirstSearch(2, 2, 1, 1);
         // myTest.BestFirstSearch(0, 0, 2, 0);
         // myTest.DjikstraSearch(0, 0, 4, 4);
@@ -70,7 +70,7 @@ public class PahfindingTest : MonoBehaviour
         //RouteFound = myPathfinder.DepthFirstSearch(0, 0, 9, 9);
         //if (RouteFound != null)
         //{
-        //    // Entonces le pedimos las coordenadas de mundo de la ruta
+        //    Entonces le pedimos las coordenadas de mundo de la ruta
         //    RouteCoords = myPathfinder.GetRouteInWorldCoordinates(RouteFound);
         //}
     }

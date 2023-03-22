@@ -593,10 +593,15 @@ public class ClassGrid
         MyObject.transform.parent = in_parent;
         MyObject.transform.localPosition = in_localPosition;
 
+        //agregue el boxcollider por medio de codigo
         MyObject.AddComponent<BoxCollider>();
+        //cree una referencia para poder manipular las propiedades del box collider
         BoxCollider bc_BXcollider = MyObject.GetComponent<BoxCollider>();
+        //le di un tamaño utilizando la informacion del inspector
         bc_BXcollider.size = new Vector3(5f, 5f, 0);
+        //puse su centro 
         bc_BXcollider.center = Vector3.zero;
+        //hice que fuera trigger para que el agente pudiera pasar por los nodos
         bc_BXcollider.isTrigger = true;
 
         TextMesh myTM = MyObject.GetComponent<TextMesh>();

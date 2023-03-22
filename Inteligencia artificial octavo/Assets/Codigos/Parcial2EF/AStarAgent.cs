@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class AStarAgent : NewSteeringBehaviors
 {
+    //cree la lista que nos permita ver cuantos agentes tendremos en la escena
+    public static List<AStarAgent> selectableobject = new List<AStarAgent>();
+    // variable booleana para saber si el agente esta seleccionado
+    public bool selected = false;
+
     public int2 StartPosition = int2.zero;
     public int2 EndPosition = int2.zero;
 
@@ -18,13 +23,16 @@ public class AStarAgent : NewSteeringBehaviors
 
     ClassGrid _GridReference;
 
+
     int iCurrentRoutePoint = 0;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        _PathfindingReference = GameObject.FindGameObjectWithTag("grid").GetComponent<PahfindingTest>();
+        selectableobject.Add(this);
+
+        _PathfindingReference = GameObject.FindGameObjectWithTag("Grid").GetComponent<PahfindingTest>();
 
         _GridReference = _PathfindingReference.myGrid;
 
@@ -91,5 +99,27 @@ public class AStarAgent : NewSteeringBehaviors
         // Hacemos un Clamp para que no exceda la velocidad máxima que puede tener el agente
         myRigidbody.velocity = Vector3.ClampMagnitude(myRigidbody.velocity, fMaxSpeed);
     }
+
+    void OnMouseDown()
+    {
+        //si damos click sobre un objeto que contenga este codigo cambiaremos la booleana a true
+        selected = true;
+        //haremos que el color del objeto cambie a verde
+        this.gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+        //aqui buscaremos en la lista para saber siel objeto esta seleccionado
+        foreach (AStarAgent obj in selectableobject)
+        {
+            // si el objeto seleccionado es diferente al que esta seleccionado
+            if (obj != this)
+            {
+                //pondremos la booleana en falso 
+                obj.selected = false;
+                //cambiaremos su color a blanco
+                obj.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+            }
+
+        }
+    }
+
 
 }
