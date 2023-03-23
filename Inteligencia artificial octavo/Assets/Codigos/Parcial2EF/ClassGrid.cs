@@ -18,6 +18,9 @@ public class Node
     // public List<Node> Neighbors;
     public Node Parent;
 
+    
+
+
 
     // Este es para a* y djikstra.
     public float f_Cost;  // El costo Final de este nodo, el cual es g_Cost + h_Cost
@@ -61,6 +64,7 @@ public class ClassGrid
     public bool bShowDebug = true;
     public GameObject debugGO = null;
 
+
     // int -> default = 0
     // bool -> default = false...
 
@@ -84,7 +88,7 @@ public class ClassGrid
             {
                 for (int x = 0; x < iWidth; x++)
                 {
-                    debugTextArray[y, x] = CreateWorldText2(Nodes[y, x].ToString(),
+                    debugTextArray[y, x] = CreateWorldText2(x,y,Nodes[y, x].ToString(),
                     debugGO.transform, GetWorldPosition(x, y) + new Vector3(fTileSize * 0.5f, fTileSize * 0.5f),
                     30, Color.white, TextAnchor.MiddleCenter);
                     //// Dibujamos líneas en el mundo para crear nuestra cuadrícula.
@@ -112,10 +116,11 @@ public class ClassGrid
         }
     }
 
-    // Quiero encontrar un camino de start a end.
-    public List<Node> DepthFirstSearch(int in_startX, int in_startY, int in_endX, int in_endY)
+
+        // Quiero encontrar un camino de start a end.
+        public List<Node> DepthFirstSearch(int in_startX, int in_startY, int in_endX, int in_endY)
     {
-        Node StartNode = GetNode(in_startY, in_startX);
+        Node StartNode = GetNode(in_startX,in_startY);
         Node EndNode = GetNode(in_endY, in_endX);
 
         if (StartNode == null || EndNode == null)
@@ -259,6 +264,8 @@ public class ClassGrid
     {
         Node StartNode = GetNode(in_startY, in_startX);
         Node EndNode = GetNode(in_endY, in_endX);
+
+       
 
         if (StartNode == null || EndNode == null)
         {
@@ -415,6 +422,8 @@ public class ClassGrid
         Node StartNode = GetNode(in_startX, in_startY);
         Node EndNode = GetNode(in_endX, in_endY);
 
+
+
         if (StartNode == null || EndNode == null)
         {
             // Mensaje de error.
@@ -428,12 +437,14 @@ public class ClassGrid
         StartNode.g_Cost = 0;
         OpenList.Add(StartNode);
 
+
         while (OpenList.Count > 0)
         {
             // Mientras haya nodos en la lista abierta, vamos a buscar un camino.
             // Obtenemos el primer nodo de la Lista Abierta
             Node currentNode = OpenList.Dequeue();
             Debug.Log("Current Node is: " + currentNode.x + ", " + currentNode.y);
+
 
             // Checamos si ya llegamos al destino.
             // Por motivos didácticos sí lo vamos a terminar al llegar al nodo objetivo.
@@ -443,7 +454,9 @@ public class ClassGrid
                 Debug.Log("Camino encontrado");
                 // Necesitamos construir ese camino. Para eso hacemos backtracking.
                 List<Node> path = Backtrack(currentNode);
+
                 EnumeratePath(path);
+
                 return path;
             }
 
@@ -490,8 +503,19 @@ public class ClassGrid
                 OpenList.Insert((int)neighbor.f_Cost, neighbor);
             }
 
+
             foreach (Node n in OpenList.nodes)
+            {
                 Debug.Log("n Node is: " + n.x + ", " + n.y + ", value= " + n.f_Cost);
+
+                debugTextArray[n.y, n.x].color = Color.green;
+                debugTextArray[n.y, n.x].fontSize = 15;
+                debugTextArray[n.y, n.x].text = n.ToString() +
+                 Environment.NewLine + "gCost: " + n.g_Cost.ToString() +
+                  Environment.NewLine + "hCost: " + n.h_Cost.ToString() +
+                   Environment.NewLine + "fCost: " + n.f_Cost.ToString();
+            }
+
 
         }
 
@@ -569,7 +593,14 @@ public class ClassGrid
         {
             iCounter++;
             debugTextArray[n.y, n.x].text = n.ToString() +
-                Environment.NewLine + "step: " + iCounter.ToString();
+                 Environment.NewLine + "Step: " + iCounter.ToString() +
+                 Environment.NewLine + "gCost: " + n.g_Cost.ToString() +
+                  Environment.NewLine + "hCost: " + n.h_Cost.ToString() +
+                   Environment.NewLine + "fCost: " + n.f_Cost.ToString();
+            
+            debugTextArray[n.y, n.x].color = Color.red;
+
+            debugTextArray[n.y, n.x].fontSize = 15;
         }
     }
 
@@ -584,7 +615,7 @@ public class ClassGrid
     }
 
 
-    public static TextMesh CreateWorldText2(string in_text, Transform in_parent = null,
+    public static TextMesh CreateWorldText2(int x, int y, string in_text, Transform in_parent = null,
         Vector3 in_localPosition = default, int in_iFontSize = 32, Color in_color = default,
         TextAnchor in_textAnchor = TextAnchor.UpperLeft, TextAlignment in_textAlignment = TextAlignment.Left)
     {
@@ -593,16 +624,30 @@ public class ClassGrid
         MyObject.transform.parent = in_parent;
         MyObject.transform.localPosition = in_localPosition;
 
+        MyObject.AddComponent<check>();
+
+        //definimos un check que tendtra los valores que obtuvimos del codigo check
+        check checkScript = MyObject.GetComponent<check>();
+
+        //aqui es donde utilizamos las coordenadas que seteamos en el codigo de check
+        checkScript.getCoords(x,y);
+
         //agregue el boxcollider por medio de codigo
         MyObject.AddComponent<BoxCollider>();
         //cree una referencia para poder manipular las propiedades del box collider
         BoxCollider bc_BXcollider = MyObject.GetComponent<BoxCollider>();
         //le di un tamaño utilizando la informacion del inspector
-        bc_BXcollider.size = new Vector3(5f, 5f, 0);
+        bc_BXcollider.size = new Vector3(9f, 9f, 0);
         //puse su centro 
         bc_BXcollider.center = Vector3.zero;
         //hice que fuera trigger para que el agente pudiera pasar por los nodos
         bc_BXcollider.isTrigger = true;
+        //guardamos el Parent y la Local Position
+        MyObject.transform.parent = in_parent;
+        MyObject.transform.localPosition = in_localPosition;
+
+        //utilizamos el tag Grid para poder interactuar con la escena, sin esta linea, el programa no funciona
+        MyObject.tag = "Grid";
 
         TextMesh myTM = MyObject.GetComponent<TextMesh>();
         myTM.text = in_text;
@@ -622,8 +667,8 @@ public class ClassGrid
         // (dado que tienen lo mismo de alto y ancho cada cuadro)
         // y finalmente sumamos la posición de origen del grid.
         return new Vector3(x, y) * fTileSize + v3OriginPosition;
-    }
 
+    }
     public static TextMesh CreateWorldText(string in_text, Transform in_parent = null,
     Vector3 in_localPosition = default, int in_iFontSize = 32,
     Color in_color = default, TextAnchor in_textAnchor = TextAnchor.UpperLeft,
@@ -669,3 +714,5 @@ public class ClassGrid
     }
 
 }
+
+

@@ -168,7 +168,7 @@ public class NewSteeringBehaviors : MonoBehaviour
 
     }
 
-    Vector3 Arrive(Vector3 in_v3TargetPosition)
+    public Vector3 Arrive(Vector3 in_v3TargetPosition)
     {
         // check if it's in the radius
         Vector3 v3Diff = in_v3TargetPosition - transform.position;
@@ -237,14 +237,7 @@ public class NewSteeringBehaviors : MonoBehaviour
 
         // Hacemos un Clamp para que no exceda la velocidad máxima que puede tener el agente
         myRigidbody.velocity = Vector3.ClampMagnitude(myRigidbody.velocity, fMaxSpeed);
-        //if (myRigidbody.velocity.magnitude > fMaxSpeed)
-        //{
-        //    Debug.Log("Velocity exceeded max speed");
-        //}
 
-        // Ya no es necesario llamar estas líneas, porque el motor de físicas lo hace por nosotros
-        // currentPosition += currentVelocity * Time.deltaTime;
-        // transform.position = currentPosition;
     }
 
     private void OnDrawGizmos()

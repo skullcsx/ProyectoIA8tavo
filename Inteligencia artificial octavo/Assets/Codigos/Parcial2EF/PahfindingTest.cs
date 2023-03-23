@@ -9,15 +9,26 @@ public class PahfindingTest : MonoBehaviour
 {
     public MeshFilter BlackSphere = null;
 
-    // private PFGrid<TileNode> myGrid;
-    // private Pathfinder myPathfinder;
-
+    //definimos variables y gameObjects
 
     public int iWidth = 5;
     public int iHeight = 5;
     public float fTileSize = 10.0f;
 
     public ClassGrid myGrid;
+
+    public GameObject ST_Node;
+    public GameObject EN_Node;
+
+    public bool Inicio = false;
+    public bool Final = false;
+
+    public bool Comienzo = false;
+
+    public bool CaminoL = false;
+
+    public List<Node> PathFinding_test;
+
 
     private void Awake()
     {
@@ -33,46 +44,7 @@ public class PahfindingTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // this.runInEditMode= true;
-
-
-
-
-        //myTest.DepthFirstSearch(0, 0, 4, 4);
-        // myTest.BreadthFirstSearch(2, 2, 1, 1);
-        // myTest.BestFirstSearch(0, 0, 2, 0);
-        // myTest.DjikstraSearch(0, 0, 4, 4);
-        // List<Node> Pathfinding_result = myTest.AStarSearch(StartPosition.x, StartPosition.y, EndPosition.x, EndPosition.y);  // Mío, corregido
-
-
-
-        // Asignar ruta a seguir al agente de pathfinding.
-        // myAgent.
-
-
-        //[0, 1]
-        //[0, 0] [1, 0] [2, 0] [3, 0] [4, 0]
-
-
-
-
-
-
-        // myGrid = new PFGrid<TileNode>(20, 10, 10f, Vector3.zero,
-        //     (PFGrid<TileNode> g, int x, int y) => new TileNode(g, x, y));
-
-        // Estos los usamos para probar que efectivamente termina cuando no hay camino.
-        //myGrid.GetTile(1, 0).SetIsWalkable(false);
-        //myGrid.GetTile(1, 1).SetIsWalkable(false);
-        //myGrid.GetTile(0, 1).SetIsWalkable(false);
-
-        // myPathfinder = new Pathfinder(myGrid);
-        //RouteFound = myPathfinder.DepthFirstSearch(0, 0, 9, 9);
-        //if (RouteFound != null)
-        //{
-        //    Entonces le pedimos las coordenadas de mundo de la ruta
-        //    RouteCoords = myPathfinder.GetRouteInWorldCoordinates(RouteFound);
-        //}
+      
     }
 
     // Update is called once per frame
@@ -84,26 +56,42 @@ public class PahfindingTest : MonoBehaviour
             position.z = 0f;
         }
 
+        //hacemos una comprobacion para saber si ya tenemos los nodos inicio y final
+        if(Inicio == true && Final == true)
+        {
+            Comienzo = true;
+        }
+
+        //comprobamos el resultado anterior y agregamos la tecla spacio para poder lanzar al agente
+        if(Comienzo == true && Input.GetKeyDown("space"))
+        {
+            //igualamos los componentes de inicio y final que obtuvimos en el codigo check
+            check Check_PInicio = ST_Node.GetComponent<check>();
+            check Check_PFinal = EN_Node.GetComponent<check>();
+
+            //utilizamos las coordenadas que seteamos en el codigo check y ClassGrid
+            PathFinding_test = myGrid.AStarSearch(Check_PInicio.CordX, Check_PInicio.CordY, Check_PFinal.CordX, Check_PFinal.CordY);
+            //creamos una nueva lista
+            List<Vector3> wPositionPF = new List<Vector3>();
+            
+            //avanzamos en la lista
+            foreach (Node n in PathFinding_test)
+            {
+                //agregamos la world position
+                wPositionPF.Add(myGrid.GetWorldPosition(n.x, n.y));
+            }
+
+            //pasamos a true la booleana de Camino Listo
+            CaminoL = true;
+
+        }
+
 
 
     }
 
     public void OnDrawGizmos()
     {
-        //if (RouteCoords != null && Application.isPlaying)
-        //{
-        //    float fTileSize = myGrid.GetTileSize() / 4.0f;
-        //    Gizmos.color = Color.white;
-        //    Color currentColor = Color.black;
-        //    Color ColorIncrease = new Color(1.0f / RouteCoords.Count, 1.0f / RouteCoords.Count, 1.0f / RouteCoords.Count, 1);
-        //    // dibujamos gizmos en los tiles de la ruta encontrada
-        //    foreach (Vector3 tilePosition in RouteCoords)
-        //    {
-        //        Gizmos.color = currentColor + ColorIncrease;
-        //        currentColor += ColorIncrease;
-        //        // print(currentColor);
-        //        Gizmos.DrawSphere(tilePosition, fTileSize);
-        //    }
-        //}
+
     }
 }
