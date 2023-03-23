@@ -10,6 +10,12 @@ En este proyecto utilice los siguientes codigos:
 
 los codigos modificados fueron 
 
-el AStarAgent en donde hice que fuera seleccionable
+el AStarAgent (hicimos seleccionable el agente y sigue el camino)
 
-classGrid donde agregue los colliders para intentar sacar la posicion.
+classGrid (donde agregue los colliders para la posicion al igual que las coordenadas y mostramos la informacion de los nodos, los muestra verde y rojo)
+
+creamos un codigo de check (en donde obtenemos los nodos de inicio y final y creamos la esfera y el cubo para los nodos)
+
+PathFindingTest (en este codigo creamos la comprobacion para lanzar al agente o los agentes)
+
+
