@@ -469,6 +469,13 @@ public class ClassGrid
 
             ClosedList.Add(currentNode);
 
+            debugTextArray[currentNode.y, currentNode.x].color = Color.blue;
+            debugTextArray[currentNode.y, currentNode.x].fontSize = 15;
+            debugTextArray[currentNode.y, currentNode.x].text = currentNode.ToString() +
+             Environment.NewLine + "gCost: " + currentNode.g_Cost.ToString() +
+              Environment.NewLine + "hCost: " + currentNode.h_Cost.ToString() +
+               Environment.NewLine + "fCost: " + currentNode.f_Cost.ToString();
+
             // Vamos a visitar a todos sus vecinos.
             List<Node> currentNeighbors = GetNeighbors(currentNode);
             foreach (Node neighbor in currentNeighbors)
@@ -501,6 +508,13 @@ public class ClassGrid
                 neighbor.h_Cost = GetDistance(neighbor, EndNode);
                 neighbor.f_Cost = neighbor.g_Cost + neighbor.h_Cost;
                 OpenList.Insert((int)neighbor.f_Cost, neighbor);
+
+                debugTextArray[neighbor.y, neighbor.x].color = Color.green;
+                debugTextArray[neighbor.y, neighbor.x].fontSize = 15;
+                debugTextArray[neighbor.y, neighbor.x].text = neighbor.ToString() +
+                 Environment.NewLine + "gCost: " + neighbor.g_Cost.ToString() +
+                  Environment.NewLine + "hCost: " + neighbor.h_Cost.ToString() +
+                   Environment.NewLine + "fCost: " + neighbor.f_Cost.ToString();
             }
 
 
@@ -508,12 +522,6 @@ public class ClassGrid
             {
                 Debug.Log("n Node is: " + n.x + ", " + n.y + ", value= " + n.f_Cost);
 
-                debugTextArray[n.y, n.x].color = Color.green;
-                debugTextArray[n.y, n.x].fontSize = 15;
-                debugTextArray[n.y, n.x].text = n.ToString() +
-                 Environment.NewLine + "gCost: " + n.g_Cost.ToString() +
-                  Environment.NewLine + "hCost: " + n.h_Cost.ToString() +
-                   Environment.NewLine + "fCost: " + n.f_Cost.ToString();
             }
 
 
